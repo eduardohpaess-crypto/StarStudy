@@ -1,0 +1,6 @@
+{
+  "name": "StarStudy",
+  "description": "Plataforma inteligente de estudos e produtividade acadêmica com IA e persistência local.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

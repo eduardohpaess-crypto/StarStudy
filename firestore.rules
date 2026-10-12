@@ -1,0 +1,75 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Safety Net (Pillar 4)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // User Profile Document
+    match /users/{userId} {
+      allow get: if isOwner(userId) && isValidId(userId);
+      allow list: if false; // PII Protection: users cannot list all users
+      allow create: if isOwner(userId) && isValidId(userId)
+        && request.resource.data.userId == request.auth.uid;
+      allow update: if isOwner(userId) && isValidId(userId)
+        && request.resource.data.userId == request.auth.uid;
+      allow delete: if isOwner(userId) && isValidId(userId);
+
+      // User Subcollections
+      match /subjects/{subjectId} {
+        allow read, write: if isOwner(userId) && isValidId(subjectId);
+      }
+
+      match /tasks/{taskId} {
+        allow read, write: if isOwner(userId) && isValidId(taskId);
+      }
+
+      match /sessions/{sessionId} {
+        allow read, write: if isOwner(userId) && isValidId(sessionId);
+      }
+
+      match /flashcards/{flashcardId} {
+        allow read, write: if isOwner(userId) && isValidId(flashcardId);
+      }
+
+      match /quizzes/{quizId} {
+        allow read, write: if isOwner(userId) && isValidId(quizId);
+      }
+
+      match /aiMaterials/{materialId} {
+        allow read, write: if isOwner(userId) && isValidId(materialId);
+      }
+
+      match /events/{eventId} {
+        allow read, write: if isOwner(userId) && isValidId(eventId);
+      }
+
+      match /habits/{habitId} {
+        allow read, write: if isOwner(userId) && isValidId(habitId);
+      }
+
+      match /notes/{noteId} {
+        allow read, write: if isOwner(userId) && isValidId(noteId);
+      }
+
+      match /videos/{videoId} {
+        allow read, write: if isOwner(userId) && isValidId(videoId);
+      }
+    }
+  }
+}

@@ -1,0 +1,262 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Perfil acadêmico do usuário estudante",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "name": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "maxLength": 150 },
+        "course": { "type": "string", "maxLength": 100 },
+        "university": { "type": "string", "maxLength": 100 },
+        "currentSemester": { "type": "number" },
+        "dailyGoalMinutes": { "type": "number" },
+        "weeklyGoalMinutes": { "type": "number" },
+        "xp": { "type": "number" },
+        "level": { "type": "number" },
+        "streakDays": { "type": "number" },
+        "lastActiveDate": { "type": "string", "maxLength": 30 },
+        "darkMode": { "type": "boolean" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["userId", "name", "email"]
+    },
+    "Subject": {
+      "title": "Subject",
+      "description": "Disciplina acadêmica do estudante",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "name": { "type": "string", "maxLength": 150 },
+        "code": { "type": "string", "maxLength": 30 },
+        "professor": { "type": "string", "maxLength": 100 },
+        "schedule": { "type": "string", "maxLength": 100 },
+        "semester": { "type": "number" },
+        "credits": { "type": "number" },
+        "color": { "type": "string", "maxLength": 20 },
+        "difficulty": { "type": "string", "enum": ["facil", "medio", "dificil"] },
+        "priority": { "type": "string", "enum": ["low", "medium", "high", "urgent"] },
+        "currentGrade": { "type": "number" },
+        "targetGrade": { "type": "number" },
+        "minPassingGrade": { "type": "number" },
+        "status": { "type": "string", "enum": ["cursando", "aprovado", "reprovado", "trancado"] },
+        "topics": { "type": "array" },
+        "exams": { "type": "array" },
+        "studyTimeMinutes": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "name", "semester", "credits"]
+    },
+    "Task": {
+      "title": "Task",
+      "description": "Tarefa acadêmica no Kanban",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string", "maxLength": 200 },
+        "description": { "type": "string", "maxLength": 2000 },
+        "subjectId": { "type": "string" },
+        "category": { "type": "string" },
+        "priority": { "type": "string", "enum": ["low", "medium", "high", "urgent"] },
+        "dueDate": { "type": "string", "maxLength": 30 },
+        "estimatedMinutes": { "type": "number" },
+        "status": { "type": "string", "enum": ["todo", "in_progress", "done"] },
+        "createdAt": { "type": "string" },
+        "completedAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "title", "subjectId", "status"]
+    },
+    "StudySession": {
+      "title": "StudySession",
+      "description": "Registro de sessão de foco ou pomodoro",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "topicId": { "type": "string" },
+        "date": { "type": "string" },
+        "durationMinutes": { "type": "number" },
+        "cycleType": { "type": "string" },
+        "notes": { "type": "string", "maxLength": 500 },
+        "xpEarned": { "type": "number" }
+      },
+      "required": ["id", "userId", "subjectId", "durationMinutes", "date"]
+    },
+    "Flashcard": {
+      "title": "Flashcard",
+      "description": "Cartão de estudo para repetição espaçada",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "topicName": { "type": "string", "maxLength": 100 },
+        "front": { "type": "string", "maxLength": 2000 },
+        "back": { "type": "string", "maxLength": 3000 },
+        "difficulty": { "type": "string" },
+        "mastery": { "type": "number" },
+        "intervalDays": { "type": "number" },
+        "nextReviewDate": { "type": "string" },
+        "repetitionCount": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "subjectId", "front", "back"]
+    },
+    "QuizAttempt": {
+      "title": "QuizAttempt",
+      "description": "Tentativa de simulado realizada",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string", "maxLength": 200 },
+        "subjectId": { "type": "string" },
+        "totalQuestions": { "type": "number" },
+        "correctCount": { "type": "number" },
+        "wrongCount": { "type": "number" },
+        "scorePercent": { "type": "number" },
+        "timeSpentSeconds": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "subjectId", "scorePercent"]
+    },
+    "AiMaterial": {
+      "title": "AiMaterial",
+      "description": "Material pedagógico gerado por IA salvo na biblioteca",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string", "maxLength": 200 },
+        "type": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "content": { "type": "string" },
+        "tags": { "type": "array" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "title", "content"]
+    },
+    "CalendarEvent": {
+      "title": "CalendarEvent",
+      "description": "Evento agendado no calendário acadêmico",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string", "maxLength": 200 },
+        "category": { "type": "string" },
+        "startDate": { "type": "string" },
+        "endDate": { "type": "string" },
+        "allDay": { "type": "boolean" },
+        "priority": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "description": { "type": "string", "maxLength": 2000 },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "title", "startDate", "endDate"]
+    },
+    "Habit": {
+      "title": "Habit",
+      "description": "Hábito acadêmico",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string", "maxLength": 200 },
+        "frequency": { "type": "string" },
+        "completions": { "type": "array" },
+        "streakDays": { "type": "number" },
+        "color": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "title"]
+    },
+    "QuickNote": {
+      "title": "QuickNote",
+      "description": "Nota rápida do estudante",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string", "maxLength": 200 },
+        "content": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "tags": { "type": "array" },
+        "pinned": { "type": "boolean" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "title", "content"]
+    },
+    "StudyVideo": {
+      "title": "StudyVideo",
+      "description": "Vídeo de aula cadastrado",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string", "maxLength": 200 },
+        "description": { "type": "string", "maxLength": 1000 },
+        "subjectId": { "type": "string" },
+        "url": { "type": "string", "maxLength": 500 },
+        "platform": { "type": "string" },
+        "durationMinutes": { "type": "number" },
+        "watched": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "title", "url"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Documento de perfil e preferências do usuário autenticado"
+    },
+    "/users/{userId}/subjects/{subjectId}": {
+      "schema": "Subject",
+      "description": "Disciplinas do usuário"
+    },
+    "/users/{userId}/tasks/{taskId}": {
+      "schema": "Task",
+      "description": "Tarefas do Kanban do usuário"
+    },
+    "/users/{userId}/sessions/{sessionId}": {
+      "schema": "StudySession",
+      "description": "Sessões de estudo e foco do usuário"
+    },
+    "/users/{userId}/flashcards/{flashcardId}": {
+      "schema": "Flashcard",
+      "description": "Flashcards de repetição espaçada do usuário"
+    },
+    "/users/{userId}/quizzes/{quizId}": {
+      "schema": "QuizAttempt",
+      "description": "Tentativas de simulado do usuário"
+    },
+    "/users/{userId}/aiMaterials/{materialId}": {
+      "schema": "AiMaterial",
+      "description": "Materiais gerados por IA salvos pelo usuário"
+    },
+    "/users/{userId}/events/{eventId}": {
+      "schema": "CalendarEvent",
+      "description": "Eventos no calendário do usuário"
+    },
+    "/users/{userId}/habits/{habitId}": {
+      "schema": "Habit",
+      "description": "Hábitos do usuário"
+    },
+    "/users/{userId}/notes/{noteId}": {
+      "schema": "QuickNote",
+      "description": "Notas rápidas do usuário"
+    },
+    "/users/{userId}/videos/{videoId}": {
+      "schema": "StudyVideo",
+      "description": "Vídeos cadastrados pelo usuário"
+    }
+  }
+}
